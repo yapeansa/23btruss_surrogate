@@ -1,15 +1,19 @@
+import torch
 from torch import nn
 
 class Net3(nn.Module):
     def __init__(self, n_feature, n_hidden, n_output, depth, init=0.1):
         super().__init__()
 
-        self.input = nn.Linear(n_feature, n_hidden)
-        self.layers = nn.ModuleList([nn.Linear(n_hidden, n_hidden) for _ in range(depth)])
+        self.input   = nn.Linear(n_feature, n_hidden)
+        self.layers  = nn.ModuleList([nn.Linear(n_hidden, n_hidden) for _ in range(depth)])
         self.predict = nn.Linear(n_hidden, n_output)
 
         self._init_weights(init)
 
+        # self.bn         = nn.BatchNorm1d(n_hidden)
+        # self.dropout    = nn.Dropout(0.05)
+        self.scale = nn.Parameter(torch.tensor(1e-3))
         self.activation = nn.SiLU()
 
     def _init_weights(self, init):
@@ -25,7 +29,10 @@ class Net3(nn.Module):
     
     def forward(self, x):
         x = self.activation(self.input(x))
+        # x = self.bn(x)
         for layer in self.layers:
             x = self.activation(layer(x))
+            # x = self.bn(x)
+            # x = self.dropout(x)
         x = self.predict(x)
-        return x
+        return x * self.scale

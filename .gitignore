@@ -1,3 +1,6 @@
 /models
-wipe_data
+wipe_data.sh
 /data
+correction.ipynb
+scaler.pkl
+sudret.pdf

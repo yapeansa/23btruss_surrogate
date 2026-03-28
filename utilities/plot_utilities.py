@@ -18,7 +18,7 @@ def plot_data_general(np_array_1=None, np_array_2=None, np_array_3=None, savefil
     plt.plot(x_axis, femnn_data, label=labels[1], color='olive', linestyle='dashed', marker='X', markeredgecolor='olive',
         markerfacecolor='olive')
 
-    plt.yticks(np.arange(np.ceil(-80/20)*20, y_max+1, 20))
+    # plt.yticks(np.arange(np.ceil(-80/20)*20, y_max+1, 20))
     plt.xlabel(axis_label[0])
     plt.ylabel(axis_label[1])
     plt.grid(True, c='#ccc', alpha=0.5)

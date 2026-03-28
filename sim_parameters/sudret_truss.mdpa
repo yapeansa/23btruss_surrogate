@@ -4,6 +4,13 @@ End ModelPartData
 
 Begin Properties 0
 End Properties
+
+Begin Properties 1
+End Properties
+
+Begin Properties 2
+End Properties
+
 Begin Nodes
     1  24.0000000000   0.0000000000   0.0000000000
     2  22.0000000000   2.0000000000   0.0000000000
@@ -22,35 +29,35 @@ End Nodes
 
 
 Begin Elements TrussLinearElement3D2N// GUI group identifier: H
-       13          0          1          3 
-       14          0          3          5 
-       15          0          5          7 
-       16          0          7          9 
-       17          0          9         11 
-       18          0         11         13 
-       19          0         12         10 
-       20          0         10          8 
-       21          0          8          6 
-       22          0          6          4 
-       23          0          4          2 
+       13          1          1          3 
+       14          1          3          5 
+       15          1          5          7 
+       16          1          7          9 
+       17          1          9         11 
+       18          1         11         13 
+       19          1         12         10 
+       20          1         10          8 
+       21          1          8          6 
+       22          1          6          4 
+       23          1          4          2 
 End Elements
 
 Begin Elements TrussLinearElement3D2N// GUI group identifier: V
-        1          0         13         12 
-        2          0         12         11 
-        3          0         11         10 
-        4          0         10          9 
-        5          0          9          8 
-        6          0          8          7 
-        7          0          7          6 
-        8          0          6          5 
-        9          0          5          4 
-       10          0          4          3 
-       11          0          3          2 
-       12          0          2          1 
+        1          2         13         12 
+        2          2         12         11 
+        3          2         11         10 
+        4          2         10          9 
+        5          2          9          8 
+        6          2          8          7 
+        7          2          7          6 
+        8          2          6          5 
+        9          2          5          4 
+       10          2          4          3 
+       11          2          3          2 
+       12          2          2          1 
 End Elements
 
-Begin Conditions PointLoadCondition2D1N// GUI group identifier: Load on points Auto2
+Begin Conditions PointLoadCondition3D1N// GUI group identifier: Load on points Auto2
     1 0 2
     2 0 4
     3 0 6

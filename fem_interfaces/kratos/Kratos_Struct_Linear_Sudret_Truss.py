@@ -5,9 +5,7 @@ import KratosMultiphysics as km
 import KratosMultiphysics.StructuralMechanicsApplication as StructuralMechanicsApplication
 from KratosMultiphysics.StructuralMechanicsApplication.structural_mechanics_analysis import StructuralMechanicsAnalysis
 from KratosMultiphysics.StructuralMechanicsApplication.structural_mechanics_static_solver import StaticMechanicalSolver
-import numpy as np
 from scipy import io
-import KratosMultiphysics.scipy_conversion_tools
 import os
 
 """
