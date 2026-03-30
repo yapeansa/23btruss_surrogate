@@ -1,6 +1,6 @@
 # 23 bar truss surrogate model
 
-## Structure of the project
+## Project structure
 
 ```
 .
