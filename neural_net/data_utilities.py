@@ -1,6 +1,5 @@
 import torch
 from torch.utils.data import Dataset, DataLoader
-import numpy as np
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
@@ -11,11 +10,8 @@ class loader_creation():
         data_in, k_all, f_all = [torch.as_tensor(x, dtype=torch.double).to(device)
                                  if not torch.is_tensor(x) else x
                                  for x in [data_in, k_all, f_all]]
-        
-        if int(0.8*length) < 1:
-            split_index = 1
-        else:
-            split_index = int(0.8*length)
+
+        split_index = max(1, int(0.8*length))
 
         # splitting to training and testing 
         train_in = data_in[0:split_index]
@@ -27,7 +23,7 @@ class loader_creation():
         
         # passing to dataset to make it iterable
         self.ds_train = customdataset_withKandF(train_in, k_train, f_train)
-        self.ds_test = customdataset_withKandF(test_in, k_test, f_test)
+        self.ds_test  = customdataset_withKandF(test_in, k_test, f_test)
     
     def get_loaders(self, b_size=8, shuffle=True):
 
@@ -41,8 +37,8 @@ class customdataset_withKandF(Dataset):
     # A class to load a custom dataset with k and f.
     def __init__(self, data_in, k, f):
         self.data_in = data_in
-        self.k = k
-        self.f = f 
+        self.k       = k
+        self.f       = f 
 
     def __getitem__(self, index):
         return self.data_in[index], self.k[index], self.f[index]
