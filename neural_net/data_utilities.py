@@ -5,17 +5,12 @@ import numpy as np
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class loader_creation():
-    """
-    data_in, k_all, f_all in numpy array
-    """
+    # data_in, k_all, f_all in numpy array
     def __init__(self, data_in, k_all, f_all, length):
 
-        if not torch.is_tensor(data_in):
-            data_in = torch.tensor(data_in, dtype=torch.double).to(device)
-        if not torch.is_tensor(k_all):
-            k_all = torch.from_numpy(np.array(k_all, dtype=np.double)).to(device)
-        if not torch.is_tensor(f_all):
-            f_all = torch.from_numpy(np.array(f_all, dtype=np.double)).to(device)
+        data_in, k_all, f_all = [torch.as_tensor(x, dtype=torch.double).to(device)
+                                 if not torch.is_tensor(x) else x
+                                 for x in [data_in, k_all, f_all]]
         
         if int(0.8*length) < 1:
             split_index = 1
@@ -35,65 +30,23 @@ class loader_creation():
         self.ds_test = customdataset_withKandF(test_in, k_test, f_test)
     
     def get_loaders(self, b_size=8, shuffle=True):
-        if self.ds_train.data_in.shape[0] < 5:
-            shuffle_b = False
-        else:
-            shuffle_b = True
 
-        train_loader = DataLoader(self.ds_train, batch_size=b_size, shuffle=shuffle_b, drop_last=True)
-        
-        if self.ds_test.data_in.shape[0] > 0:
-            test_loader = DataLoader(self.ds_test , batch_size=b_size, shuffle=False, drop_last=False)
-        else:
-            test_loader = None 
+        train_loader = DataLoader(self.ds_train, batch_size=b_size, shuffle=shuffle, drop_last=True)
+        test_loader  = DataLoader(self.ds_test , batch_size=b_size, shuffle=False, drop_last=False)
         
         return train_loader, test_loader
 
 
 class customdataset_withKandF(Dataset):
-    """
-    A class to load a custom data set with kf.
-    """
-    def __init__(self, train_in, k, f):
-        """
-        Parameters
-        ----------
-        train_in : TYPE
-            Features - the points to be trained on.
-        k : TYPE
-            DESCRIPTION.
-        f : TYPE
-            DESCRIPTION.
-        Returns
-        -------
-        None.
-        """
-        self.data_in = train_in
+    # A class to load a custom dataset with k and f.
+    def __init__(self, data_in, k, f):
+        self.data_in = data_in
         self.k = k
         self.f = f 
 
     def __getitem__(self, index):
-        """
-        Parameters
-        ----------
-        index : TYPE
-            Used to retrieve corresponding slice of ---.
-        Returns
-        -------
-        self.data_in[index]
-            Corresponding slice of training data features ´self.data_in´.
-        self.k[index]
-            DESCRIPTION.
-        self.f[index]
-            DESCRIPTION.
-        """
         return self.data_in[index], self.k[index], self.f[index]
      
     def __len__(self):
-        """
-        Returns
-        -------
-        TYPE
-            Size of the whole training dataset.
-        """
+        # Returns size of the whole training dataset.
         return len(self.data_in)
