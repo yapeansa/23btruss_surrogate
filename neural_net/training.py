@@ -8,8 +8,7 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
     optimizer = torch.optim.Adam(model.parameters(), lr=l_rate)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=500, factor=0.5)
     
-    sum_loss_train = 0.0
-    sum_loss_test  = 0.0
+    sum_loss_train, sum_loss_test = 0.0, 0.0
 
     for epoch in range(epochs):
         model.train()
@@ -37,6 +36,8 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
 
         if epoch % 100 == 0:
             print(f"Epoch {epoch}: Train Loss = {avg_train_loss:.5E} | Test Loss = {avg_test_loss:.5E}")
+        
+        # earlystop logic
 
     end = time.time()
 

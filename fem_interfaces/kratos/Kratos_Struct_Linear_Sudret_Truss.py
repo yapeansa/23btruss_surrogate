@@ -160,4 +160,3 @@ class StructMechAnaWithVaryingParameters_qoi_check(StructuralMechanicsAnalysis):
     def FinalizeSolutionStep(self):
         super(StructMechAnaWithVaryingParameters_qoi_check,self).FinalizeSolutionStep()
         self.qoi = self._GetSolver().main_model_part.GetNode(7).GetSolutionStepValue(DISPLACEMENT_Y)
-        
