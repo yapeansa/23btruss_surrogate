@@ -7,7 +7,7 @@ class loader_creation:
     # data_in, k_all, f_all in numpy array
     def __init__(self, data_in, k_all, f_all, length):
 
-        data_in, k_all, f_all = [torch.as_tensor(x, dtype=torch.float32).to(device)
+        data_in, k_all, f_all = [torch.as_tensor(x, dtype=torch.double).to(device)
                                  if not torch.is_tensor(x) else x
                                  for x in [data_in, k_all, f_all]]
 

@@ -34,6 +34,21 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
         avg_test_loss = sum_loss_test / len(dataloader_test)
         scheduler.step(avg_test_loss)
 
+        if epoch == 0:
+                best_test_loss = float('inf')
+                patience_counter = 0
+            
+        if avg_test_loss < best_test_loss:
+            best_test_loss = avg_test_loss
+            patience_counter = 0
+            torch.save(model.state_dict(), 'best_model.pt')
+        else:
+            patience_counter += 1
+        
+        if patience_counter >= 100:  # patience threshold
+            print(f"Early stopping at epoch {epoch}")
+            break
+
         if epoch % 100 == 0:
             print(f"Epoch {epoch}: Train Loss = {avg_train_loss:.5E} | Test Loss = {avg_test_loss:.5E}")
         
