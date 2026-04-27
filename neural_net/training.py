@@ -46,7 +46,7 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
             if avg_test_loss < best_test_loss:
                 best_test_loss = avg_test_loss
                 patience_counter = 0
-                torch.save(model.state_dict(), 'best_model.pt')
+                torch.save(model.state_dict(), 'models/best_model.pt')
             else:
                 patience_counter += 1
             

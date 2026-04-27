@@ -11,7 +11,7 @@ class Net3(nn.Module):
 
         self._init_weights(init)
 
-        # self.bn         = nn.BatchNorm1d(n_hidden)
+        self.bn         = nn.BatchNorm1d(n_hidden)
         # self.dropout    = nn.Dropout(0.05)
         self.scale = nn.Parameter(torch.tensor(1e-3))
         self.activation = nn.SiLU()
