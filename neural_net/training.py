@@ -2,6 +2,8 @@ import torch
 import time as time
 from neural_net.loss_functions import fem_residual_loss
 
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+
 def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=20000, early_stop=True):
     begin = time.time()
     print("training begins")
@@ -14,8 +16,8 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
         model.train()
         sum_loss_train = 0.0
         for d, k, f in dataloader_train:
-            prediction = model(d)
-            loss = fem_residual_loss(prediction, k, f)
+            prediction = model(d.to(device))
+            loss = fem_residual_loss(prediction, k.to(device), f.to(device))
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -27,8 +29,8 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
         sum_loss_test = 0.0
         with torch.inference_mode(): # Desativa gradientes para poupar memória
             for d, k, f in dataloader_test:
-                prediction = model(d)
-                loss_t = fem_residual_loss(prediction, k, f)
+                prediction = model(d.to(device))
+                loss_t = fem_residual_loss(prediction, k.to(device), f.to(device))
                 sum_loss_test += loss_t.item()
 
         avg_test_loss = sum_loss_test / len(dataloader_test)
