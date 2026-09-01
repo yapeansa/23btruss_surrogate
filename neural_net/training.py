@@ -1,5 +1,4 @@
-import torch
-import time as time
+import torch, time
 from neural_net.loss_functions import fem_residual_loss
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -9,10 +8,10 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
     print("training begins")
     optimizer = torch.optim.Adam(model.parameters(), lr=l_rate)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=500, factor=0.5)
-    
+
     sum_loss_train, sum_loss_test = 0.0, 0.0
 
-    for epoch in range(epochs):
+    for epoch in range(1, epochs+1):
         model.train()
         sum_loss_train = 0.0
         for d, k, f in dataloader_train:
@@ -24,7 +23,7 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
             sum_loss_train += loss.item()
 
         avg_train_loss = sum_loss_train / len(dataloader_train)
-        
+
         model.eval()
         sum_loss_test = 0.0
         with torch.inference_mode(): # Desativa gradientes para poupar memória
@@ -36,23 +35,23 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
         avg_test_loss = sum_loss_test / len(dataloader_test)
         scheduler.step(avg_test_loss)
 
-        if epoch % 100 == 0:
+        if epoch == 1 or epoch % 100 == 0:
             print(f"Epoch {epoch}: Train Loss = {avg_train_loss:.5E} | Test Loss = {avg_test_loss:.5E}")
-        
+
         # earlystop logic
         if early_stop:
-            if epoch == 0:
+            if epoch == 1:
                     best_test_loss = float('inf')
                     patience_counter = 0
-                
+
             if avg_test_loss < best_test_loss:
                 best_test_loss = avg_test_loss
                 patience_counter = 0
                 torch.save(model.state_dict(), 'models/best_model.pt')
             else:
                 patience_counter += 1
-            
-            if patience_counter >= 100:  # patience threshold
+
+            if patience_counter >= 500:  # patience threshold
                 print(f"Early stopping at epoch {epoch}")
                 break
 
