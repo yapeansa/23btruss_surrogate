@@ -7,7 +7,7 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
     begin = time.time()
     print("training begins")
     optimizer = torch.optim.Adam(model.parameters(), lr=l_rate)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=500, factor=0.5)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=300, factor=0.5)
 
     sum_loss_train, sum_loss_test = 0.0, 0.0
 
@@ -51,7 +51,7 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
             else:
                 patience_counter += 1
 
-            if patience_counter >= 500:  # patience threshold
+            if patience_counter > 100:  # patience threshold
                 print(f"Early stopping at epoch {epoch}")
                 break
 
