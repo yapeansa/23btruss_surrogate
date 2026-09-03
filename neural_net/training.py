@@ -7,7 +7,7 @@ def train_with_loader(model, dataloader_train, dataloader_test, l_rate, epochs=2
     begin = time.time()
     print("training begins")
     optimizer = torch.optim.Adam(model.parameters(), lr=l_rate)
-    # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=300, factor=0.5)
+    # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=300, factor=0.95)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=300, gamma=0.95)
 
     sum_loss_train, sum_loss_test = 0.0, 0.0
